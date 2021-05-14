@@ -1,10 +1,9 @@
-package ex5
+package sectionfive
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestFirstUnitTest(t *testing.T) {
-	fmt.Println(SomeFunc())
+func TestEx1(t *testing.T) {
+	SomeFunc()
 }
