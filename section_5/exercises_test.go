@@ -19,3 +19,7 @@ func TestEx3(t *testing.T) {
 func TestEx4(t *testing.T) {
 	PrintOwnType()
 }
+
+func TestEx5(t *testing.T) {
+	ExerciseFive()
+}
