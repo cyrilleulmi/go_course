@@ -15,3 +15,7 @@ func TestEx2(t *testing.T) {
 func TestEx3(t *testing.T) {
 	SprintStuff()
 }
+
+func TestEx4(t *testing.T) {
+	PrintOwnType()
+}
