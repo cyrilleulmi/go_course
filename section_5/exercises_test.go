@@ -11,3 +11,7 @@ func TestEx1(t *testing.T) {
 func TestEx2(t *testing.T) {
 	PrintPackageScopeStuff()
 }
+
+func TestEx3(t *testing.T) {
+	SprintStuff()
+}
