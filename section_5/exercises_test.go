@@ -5,5 +5,9 @@ import (
 )
 
 func TestEx1(t *testing.T) {
-	SomeFunc()
+	PrintLocalStuff()
+}
+
+func TestEx2(t *testing.T) {
+	PrintPackageScopeStuff()
 }

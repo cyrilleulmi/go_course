@@ -2,7 +2,7 @@ package sectionfive
 
 import "fmt"
 
-func SomeFunc() {
+func PrintLocalStuff() {
 	a := 42
 	b := "James Bond"
 	c := true
