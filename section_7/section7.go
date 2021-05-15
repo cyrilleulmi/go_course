@@ -4,9 +4,9 @@ import "fmt"
 
 const (
 	year_a = 2021 + iota
-	year_b = 2021 + iota
-	year_c = 2021 + iota
-	year_d = 2021 + iota
+	year_b
+	year_c
+	year_d
 )
 
 func ex4() {
