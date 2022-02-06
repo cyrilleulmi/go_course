@@ -147,24 +147,30 @@ func ex7a() {
 func ex7b() {
 	channels := []chan int{}
 
-	for i := 0; i < 100; i++ {
-		temporaryChannel := make(chan int)
-		channels = append(channels, temporaryChannel)
-		go func(c chan<- int, chanNumber int) {
-			for j := 0; j < 9; j++ {
-				fmt.Println("writing into temporary channel", chanNumber, "with value", j)
-				temporaryChannel <- (j + 10*chanNumber)
-			}
-			close(temporaryChannel)
-		}(temporaryChannel, i)
-	}
-
+	channels = fanOut(channels)
 	fannedInChannel := fanIn(channels)
 
 	for v := range fannedInChannel {
 		fmt.Println("received", v, "from fanned in channel")
 	}
 	fmt.Println("done")
+}
+
+func fanOut(channels []chan int) []chan int {
+	for i := 0; i < 100; i++ {
+		temporaryChannel := make(chan int)
+		channels = append(channels, temporaryChannel)
+		go sendValuesToChannel(temporaryChannel, i)
+	}
+	return channels
+}
+
+func sendValuesToChannel(c chan int, chanNumber int) {
+	for j := 0; j < 9; j++ {
+		fmt.Println("writing into temporary channel", chanNumber, "with value", j)
+		c <- (j + 10*chanNumber)
+	}
+	close(c)
 }
 
 func fanIn(channels []chan int) chan int {
@@ -174,22 +180,23 @@ func fanIn(channels []chan int) chan int {
 	go func() {
 		for _, c := range channels {
 			wg.Add(1)
-			go func(funcChannel <-chan int) {
-				for {
-					v, ok := <-funcChannel
-					if ok {
-						resultingChannel <- v
-					} else {
-						wg.Done()
-						return
-					}
-
-				}
-			}(c)
+			go handleChannelInput(resultingChannel, wg, c)
 		}
 		wg.Wait()
 		close(resultingChannel)
 	}()
 
 	return resultingChannel
+}
+
+func handleChannelInput(resultingChannel chan int, wg sync.WaitGroup, funcChannel chan int) {
+	for {
+		v, ok := <-funcChannel
+		if ok {
+			resultingChannel <- v
+		} else {
+			wg.Done()
+			break
+		}
+	}
 }
